@@ -5,12 +5,11 @@ var nextTick = require('next-tick')
 var Buffer = require('buffer').Buffer
 
 function Storage (chunkLength, opts) {
-  var self = this
-  if (!(self instanceof Storage)) return new Storage(chunkLength, opts)
+  if (!(this instanceof Storage)) return new Storage(chunkLength, opts)
   if (!opts) opts = {}
 
-  self.chunkLength = Number(chunkLength)
-  if (!self.chunkLength) throw new Error('First argument must be a chunk length')
+  this.chunkLength = Number(chunkLength)
+  if (!this.chunkLength) throw new Error('First argument must be a chunk length')
 
   this.closed = false
   this.length = Number(opts.length) || Infinity
@@ -25,29 +24,27 @@ function Storage (chunkLength, opts) {
 }
 
 Storage.prototype.put = function (index, buf, cb) {
-  var self = this
   if (typeof cb !== 'function') cb = noop
   if (this.closed) return tick(cb, new Error('Storage is closed'))
 
-  var isLastChunk = (index === self.lastChunkIndex)
-  if (isLastChunk && buf.length !== self.lastChunkLength) {
-    return tick(cb, new Error('Last chunk length must be ' + self.lastChunkLength))
+  var isLastChunk = (index === this.lastChunkIndex)
+  if (isLastChunk && buf.length !== this.lastChunkLength) {
+    return tick(cb, new Error('Last chunk length must be ' + this.lastChunkLength))
   }
-  if (!isLastChunk && buf.length !== self.chunkLength) {
-    return tick(cb, new Error('Chunk length must be ' + self.chunkLength))
+  if (!isLastChunk && buf.length !== this.chunkLength) {
+    return tick(cb, new Error('Chunk length must be ' + this.chunkLength))
   }
 
-  self.store.setItem(String(index), buf)
+  this.store.setItem(String(index), buf)
     .then(noop)
     .then(cb, cb)
 }
 
 Storage.prototype.get = function (index, opts, cb) {
-  var self = this
-  if (typeof opts === 'function') return self.get(index, null, opts)
+  if (typeof opts === 'function') return this.get(index, null, opts)
   if (this.closed) return tick(cb, new Error('Storage is closed'))
 
-  self.store.getItem(String(index))
+  this.store.getItem(String(index))
     .then(function (value) {
       if (!value) {
         throw new Error('got null from localForage')
