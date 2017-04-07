@@ -13,7 +13,7 @@ function Storage (chunkLength, opts) {
   if (!self.chunkLength) throw new Error('First argument must be a chunk length')
 
   this.closed = false
-  this.length = Number(opts.length) || Number(opts.size) || Infinity
+  this.length = Number(opts.length) || Infinity
 
   if (this.length !== Infinity) {
     this.lastChunkLength = (this.length % this.chunkLength) || this.chunkLength
