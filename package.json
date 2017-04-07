@@ -14,10 +14,10 @@
     "localforage": "^1.3.0"
   },
   "devDependencies": {
-    "abstract-chunk-store": "^1.0.0",
-    "standard": "^5.0.2",
-    "tape": "^4.1.0",
-    "zuul": "^3.6.0"
+    "abstract-chunk-store": "^1.3.0",
+    "standard": "^10.0.1",
+    "tape": "^4.6.3",
+    "zuul": "^3.11.1"
   },
   "homepage": "https://github.com/yciabaud/localforage-chunk-store",
   "keywords": [
