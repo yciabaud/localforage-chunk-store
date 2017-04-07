@@ -37,7 +37,9 @@ Storage.prototype.put = function (index, buf, cb) {
     return tick(cb, new Error('Chunk length must be ' + self.chunkLength))
   }
 
-  self.store.setItem(String(index), buf, cb)
+  self.store.setItem(String(index), buf)
+    .then(noop)
+    .then(cb, cb)
 }
 
 Storage.prototype.get = function (index, opts, cb) {
@@ -45,15 +47,19 @@ Storage.prototype.get = function (index, opts, cb) {
   if (typeof opts === 'function') return self.get(index, null, opts)
   if (this.closed) return tick(cb, new Error('Storage is closed'))
 
-  self.store.getItem(String(index), function (err, value) {
-    if (!value) err = 'got null from localForage'
-    if (err) return tick(cb, new Error('Chunk not found: ' + err))
-
-    if (!opts) return tick(cb, null, value)
-    var offset = opts.offset || 0
-    var len = opts.length || (value.length - offset)
-    tick(cb, null, value.slice(offset, len + offset))
-  })
+  self.store.getItem(String(index))
+    .then(function (value) {
+      if (!value) {
+        throw new Error('got null from localForage')
+      }
+      if (!opts) return tick(cb, null, value)
+      var offset = opts.offset || 0
+      var len = opts.length || (value.length - offset)
+      return tick(cb, null, value.slice(offset, len + offset))
+    })
+    .catch(function (err) {
+      return tick(cb, new Error('Chunk not found: ' + err))
+    })
 }
 
 Storage.prototype.close = function (cb) {
