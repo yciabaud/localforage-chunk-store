@@ -1,7 +1,4 @@
-# localForage-chunk-store [![travis][travis-image]][travis-url]
-
-[travis-image]: https://travis-ci.org/yciabaud/localforage-chunk-store.svg?style=flat
-[travis-url]: https://travis-ci.org/yciabaud/localforage-chunkstore
+# localForage-chunk-store [![CircleCI](https://circleci.com/gh/yciabaud/localforage-chunk-store.svg?style=svg)](https://circleci.com/gh/yciabaud/localforage-chunk-store)
 
 #### [localForage](https://github.com/mozilla/localForage) persistent browser chunk store that is [abstract-chunk-store](https://github.com/mafintosh/abstract-chunk-store) compliant
 
